@@ -9,7 +9,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class NewsApplication {
     public static void main(String[] args) {
-        System.out.println("test");
         SpringApplication.run(NewsApplication.class, args);
     }
 }
