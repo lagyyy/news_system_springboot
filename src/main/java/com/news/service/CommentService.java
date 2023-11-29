@@ -1,5 +1,7 @@
 package com.news.service;
 
+import com.news.domain.ResponseResult;
+import com.news.domain.dto.CommentDto;
 import com.news.domain.entity.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,4 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface CommentService extends IService<Comment> {
 
+    ResponseResult insertOneComment(CommentDto comment);
+
+    ResponseResult queryOneArticleComment(int articleId,int userId);
 }
