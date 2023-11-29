@@ -21,8 +21,8 @@ public class CommentController {
         return commentService.insertOneComment(comment);
     }
 
-    @GetMapping("oneComments")
-    public ResponseResult queryOneArticleComment(int articleId,int userId){
+    @GetMapping("oneComments/{articleId}/{userId}")
+    public ResponseResult queryOneArticleComment(@PathVariable int articleId,@PathVariable int userId){
 
 //        Object loginId = StpUtil.getLoginId();
 //        System.out.println(loginId);

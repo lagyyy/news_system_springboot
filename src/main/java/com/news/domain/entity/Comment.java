@@ -69,6 +69,7 @@ public class Comment implements Serializable {
     /**
      * 存储点赞人ID数组
      */
+    @TableField("`like`")
     private String like;
 
     @TableField(exist = false)
