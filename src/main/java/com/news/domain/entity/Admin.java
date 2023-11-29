@@ -18,7 +18,11 @@ public class Admin implements Serializable {
      * 
      */
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Long id;
+
+    private String nickName;
+
+    private String avatar;
 
     /**
      * 管理员用户名

@@ -1,33 +1,24 @@
-package com.news.domain.entity;
+package com.news.domain.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-/**
- * 
- * @TableName news
- */
-@TableName(value ="news")
+import java.util.Date;
+
 @Data
-public class News implements Serializable {
-    /**
-     * 
-     */
-    @TableId(type = IdType.AUTO)
+public class NewsVo {
     private Integer id;
 
     /**
      * 新闻标题
      */
     private String title;
+
+    private String nickName;
+
+    private String avatar;
 
     /**
      * 新闻内容
@@ -55,8 +46,4 @@ public class News implements Serializable {
      * 标识发布者
      */
     private Long adminId;
-
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
-
 }

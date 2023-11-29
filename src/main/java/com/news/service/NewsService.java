@@ -1,7 +1,9 @@
 package com.news.service;
 
+import com.news.domain.ResponseResult;
 import com.news.domain.entity.News;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.news.domain.query.NewsQuery;
 
 /**
 * @author ngz
@@ -10,4 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface NewsService extends IService<News> {
 
+    ResponseResult getNewsListPage(Long current, Long limit, NewsQuery newsQuery);
+
+    ResponseResult getNewsOne(Long id);
 }
