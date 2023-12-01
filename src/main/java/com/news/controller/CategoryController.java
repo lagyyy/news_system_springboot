@@ -20,6 +20,10 @@ public class CategoryController {
             return ResponseResult.okResult();
         }return ResponseResult.errorResult(202,"网络错误");
     }
+    @GetMapping("all")
+    public ResponseResult getList(){
+        return ResponseResult.okResult(categoryService.list());
+    }
     @GetMapping("/delete")
     public ResponseResult delete(int id){
         boolean b = categoryService.removeById(id);

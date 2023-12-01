@@ -1,5 +1,7 @@
 package com.news.service;
 
+import com.news.domain.ResponseResult;
+import com.news.domain.dto.RegisterUserDto;
 import com.news.domain.entity.SysUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -9,5 +11,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-11-28 16:31:38
 */
 public interface SysUserService extends IService<SysUser> {
+
+    ResponseResult registerUser(RegisterUserDto registerUserDto);
+
+    ResponseResult login(RegisterUserDto registerUserDto);
 
 }

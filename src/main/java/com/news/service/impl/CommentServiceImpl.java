@@ -47,13 +47,13 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
     }
 
     @Override
-    public ResponseResult queryOneArticleComment(int articleId,int userId) {
+    public ResponseResult queryOneArticleComment(int newsId,int userId) {
 //        int loginId = Integer.parseInt(StpUtil.getLoginId().toString());
-        if (articleId<=0){
+        if (newsId<=0){
             return ResponseResult.okResult(202,"非法操作");
         }
         LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Comment::getArticleId,articleId).eq(Comment::getDelFlag,0);
+        queryWrapper.eq(Comment::getNewsId,newsId).eq(Comment::getDelFlag,0);
         List<Comment> commentList = list(queryWrapper);
         if (commentList.size()==0 && ObjectUtil.isEmpty(commentList)){
             return ResponseResult.okResult(204,"该文章无评论");

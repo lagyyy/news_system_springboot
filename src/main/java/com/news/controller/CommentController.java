@@ -21,11 +21,18 @@ public class CommentController {
         return commentService.insertOneComment(comment);
     }
 
-    @GetMapping("oneComments/{articleId}/{userId}")
-    public ResponseResult queryOneArticleComment(@PathVariable int articleId,@PathVariable int userId){
+    @GetMapping("oneComments/{newsId}/{userId}")
+    public ResponseResult queryOneArticleComment(@PathVariable int newsId,@PathVariable int userId){
 
 //        Object loginId = StpUtil.getLoginId();
 //        System.out.println(loginId);
-        return commentService.queryOneArticleComment(articleId, userId);
+        return commentService.queryOneArticleComment(newsId, userId);
+    }
+    @GetMapping("deleteComments/{newsId}/{userId}")
+    public ResponseResult deleteComment(@PathVariable int newsId,@PathVariable int userId){
+
+//        Object loginId = StpUtil.getLoginId();
+//        System.out.println(loginId);
+        return commentService.queryOneArticleComment(newsId, userId);
     }
 }
