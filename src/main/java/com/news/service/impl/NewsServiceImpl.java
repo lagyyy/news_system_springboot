@@ -117,6 +117,45 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News>
         newsVo.setNickName(admin.getNickName());
         return ResponseResult.okResult(newsVo);
     }
+
+    @Override
+    public ResponseResult getAdminNewsListPage(Long current, Long limit, NewsQuery newsQuery) {
+        Page<News> newsPage = new Page<>(current, limit);
+        QueryWrapper<News> wrapper = new QueryWrapper<>();
+        wrapper.eq("flag_delete","0");
+        wrapper.orderByDesc("publish_date");
+
+        if (newsQuery != null) {
+            String begin = newsQuery.getBegin();
+            String end = newsQuery.getEnd();
+            if (!StringUtils.isEmpty(begin) && !StringUtils.isEmpty(end)) {
+                wrapper.between("publish_date", begin, end);
+            }
+            Integer categoryId = newsQuery.getCategoryId();
+            if (ObjectUtil.isNotNull(categoryId)) {
+                wrapper.eq("category_id", categoryId);
+                page(newsPage, wrapper);
+                long total = newsPage.getTotal();
+                List<News> records = newsPage.getRecords();
+                List<NewsVo> newsVos = BeanCopyUtils.copyBeanList(records, NewsVo.class);
+
+                for (NewsVo newsVo : newsVos) {
+                    Admin admin = adminMapper.selectById(newsVo.getAdminId());
+                    if (ObjectUtil.isNotNull(admin)) {
+                        newsVo.setAvatar(admin.getAvatar());
+                        newsVo.setNickName(admin.getNickName());
+                    }
+                }
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("total", total);
+                map.put("records", newsVos);
+                return ResponseResult.okResult(map);
+
+
+            }
+        }
+        return null;
+    }
 }
 
 
