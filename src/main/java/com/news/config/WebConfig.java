@@ -19,8 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
         /**
          * 将/upload/**映射到file:D://upload
          */
-        registry.addResourceHandler("//file//**").addResourceLocations("file:/file/");
-//        registry.addResourceHandler("//file//**").addResourceLocations("file:d://file//");
+//        registry.addResourceHandler("//file//**").addResourceLocations("file:/file/");
+        registry.addResourceHandler("//file//**").addResourceLocations("file:d://file//");
     }
 
     @Override

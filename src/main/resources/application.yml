@@ -13,8 +13,8 @@ spring:
       max-file-size: 50MB
       max-request-size: 100MB
       enabled: true
-#      location: d://file/
-      location: /file/
+      location: d://file/
+#      location: /file/
   jacksondate-format: yyyy-MM-dd HH:mm:ss
   mvc:
     pathmatch:
