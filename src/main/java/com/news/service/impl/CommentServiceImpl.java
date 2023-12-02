@@ -47,13 +47,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
     }
 
     @Override
-    public ResponseResult queryOneArticleComment(int newsId,int userId) {
+    public ResponseResult queryOneNewsComment(int newsId,int userId) {
 //        int loginId = Integer.parseInt(StpUtil.getLoginId().toString());
         if (newsId<=0){
             return ResponseResult.okResult(202,"非法操作");
         }
         LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Comment::getNewsId,newsId).eq(Comment::getDelFlag,0);
+        queryWrapper.orderByDesc(Comment::getCreateTime);
         List<Comment> commentList = list(queryWrapper);
         if (commentList.size()==0 && ObjectUtil.isEmpty(commentList)){
             return ResponseResult.okResult(204,"该文章无评论");
@@ -106,6 +107,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
         commentListVo.setReadNumber(5);
 
         return ResponseResult.okResult(commentListVo);
+    }
+
+    @Override
+    public ResponseResult deleteComment(int commentId, int userId) {
+        boolean b = removeById(commentId);
+        if (b){
+            return ResponseResult.okResult(200,"删除成功！");
+        }
+        return ResponseResult.okResult(202,"删除失败");
     }
 }
 

@@ -14,5 +14,7 @@ public interface CommentService extends IService<Comment> {
 
     ResponseResult insertOneComment(CommentDto comment);
 
-    ResponseResult queryOneArticleComment(int articleId,int userId);
+    ResponseResult queryOneNewsComment(int articleId,int userId);
+
+    ResponseResult deleteComment(int commentId, int userId);
 }

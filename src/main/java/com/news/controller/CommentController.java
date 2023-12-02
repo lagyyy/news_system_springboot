@@ -22,17 +22,17 @@ public class CommentController {
     }
 
     @GetMapping("oneComments/{newsId}/{userId}")
-    public ResponseResult queryOneArticleComment(@PathVariable int newsId,@PathVariable int userId){
+    public ResponseResult queryOneNewsComment(@PathVariable int newsId,@PathVariable int userId){
 
 //        Object loginId = StpUtil.getLoginId();
 //        System.out.println(loginId);
-        return commentService.queryOneArticleComment(newsId, userId);
+        return commentService.queryOneNewsComment(newsId, userId);
     }
-    @GetMapping("deleteComments/{newsId}/{userId}")
-    public ResponseResult deleteComment(@PathVariable int newsId,@PathVariable int userId){
+    @GetMapping("deleteComments/{commentId}/{userId}")
+    public ResponseResult deleteComment(@PathVariable int commentId,@PathVariable int userId){
 
 //        Object loginId = StpUtil.getLoginId();
 //        System.out.println(loginId);
-        return commentService.queryOneArticleComment(newsId, userId);
+        return commentService.deleteComment(commentId, userId);
     }
 }
