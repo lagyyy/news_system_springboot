@@ -19,6 +19,13 @@ public class NewsController {
         return newsService.getNewsListPage(current, limit, newsQuery);
     }
 
+    @PostMapping("adminNewsPageCondition/{current}/{limit}")
+    public ResponseResult getAdminNewsListPage( @PathVariable Long current,
+                                           @PathVariable Long limit,
+                                           @RequestBody(required = false)NewsQuery newsQuery){
+        return newsService.getAdminNewsListPage(current, limit, newsQuery);
+    }
+
     @GetMapping("getOne/{id}")
     public ResponseResult getNewsOne(@PathVariable Long id){
         return newsService.getNewsOne(id);
