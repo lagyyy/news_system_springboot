@@ -43,7 +43,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin>
 
         Admin one = getOne(lambdaQueryWrapper);
         if (ObjectUtil.isNotNull(one)){
-            StpUtil.login(one.getId());
+            StpUtil.login("admin"+one.getId());
             //获取Token相关参数
             SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
             AdminVo adminVo = BeanCopyUtils.copyBean(one, AdminVo.class);

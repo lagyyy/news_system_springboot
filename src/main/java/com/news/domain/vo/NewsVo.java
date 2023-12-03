@@ -19,6 +19,7 @@ public class NewsVo {
     private String nickName;
 
     private String avatar;
+    private String description;
 
     /**
      * 新闻内容

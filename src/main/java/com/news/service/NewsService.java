@@ -17,4 +17,6 @@ public interface NewsService extends IService<News> {
     ResponseResult getNewsOne(Long id);
 
     ResponseResult getAdminNewsListPage(Long current, Long limit, NewsQuery newsQuery);
+
+    ResponseResult addNews(News news);
 }

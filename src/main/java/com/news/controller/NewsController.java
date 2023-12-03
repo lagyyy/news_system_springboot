@@ -1,6 +1,7 @@
 package com.news.controller;
 
 import com.news.domain.ResponseResult;
+import com.news.domain.entity.News;
 import com.news.domain.query.NewsQuery;
 import com.news.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,10 @@ public class NewsController {
     @GetMapping("getOne/{id}")
     public ResponseResult getNewsOne(@PathVariable Long id){
         return newsService.getNewsOne(id);
+    }
+
+    @PostMapping("addNews")
+    public ResponseResult addNews( @RequestBody(required = false) News news){
+        return newsService.addNews(news);
     }
 }

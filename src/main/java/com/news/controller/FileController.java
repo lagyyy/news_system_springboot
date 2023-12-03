@@ -8,6 +8,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.UUID;
 import com.news.domain.FileUploadResult;
 import com.news.domain.ResponseResult;
+import com.news.domain.entity.UploadFile;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,7 @@ public class FileController {
     @Value("${file.upload.relativePath}")
     private String relativePath;
     @PostMapping("/upload")
-    public ResponseResult upload(@RequestParam("file") MultipartFile file)
+    public FileUploadResult upload(@RequestParam("file") MultipartFile file)
     {
         long size = file.getSize();
         System.out.println(size);
@@ -60,8 +61,11 @@ public class FileController {
                         ("PNG").equals(type) || ("png").equals(type)) {
                     //这里是正确的图片格式
                     FileUploadResult fileUploadResult = new FileUploadResult();
-                    fileUploadResult.setUrl(relativePath + fileName);
-                    return ResponseResult.okResult(fileUploadResult);
+                    UploadFile uploadFile = new UploadFile();
+                    uploadFile.setUrl("http://127.0.0.1:8089"+relativePath + fileName);
+                    fileUploadResult.setData(uploadFile);
+                    System.out.println(fileUploadResult);
+                    return fileUploadResult;
 //                Img.from(dest);
 //                        .setQuality(0.5)//压缩比率
 //                        .write(dest);
@@ -69,11 +73,12 @@ public class FileController {
                 } else if ("mp4".equals(type)) {
                     System.out.println("上传了视频");
                     FileUploadResult fileUploadResult = new FileUploadResult();
-                    fileUploadResult.setUrl(relativePath + fileName);
-                    return ResponseResult.okResult(fileUploadResult);
+                    UploadFile uploadFile = new UploadFile();
+                    uploadFile.setUrl("http://127.0.0.1:8089"+relativePath + fileName);
+                    System.out.println(fileUploadResult);
+                    return fileUploadResult;
                 } else {
                     boolean del = FileUtil.del(dest);
-                    return ResponseResult.okResult(202, "图片格式有问题！");
                 }
 
             } catch (IOException e) {

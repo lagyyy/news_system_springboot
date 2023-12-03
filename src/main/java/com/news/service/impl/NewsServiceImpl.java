@@ -1,5 +1,7 @@
 package com.news.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -134,27 +136,54 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News>
             Integer categoryId = newsQuery.getCategoryId();
             if (ObjectUtil.isNotNull(categoryId)) {
                 wrapper.eq("category_id", categoryId);
-                page(newsPage, wrapper);
-                long total = newsPage.getTotal();
-                List<News> records = newsPage.getRecords();
-                List<NewsVo> newsVos = BeanCopyUtils.copyBeanList(records, NewsVo.class);
+            }
 
-                for (NewsVo newsVo : newsVos) {
-                    Admin admin = adminMapper.selectById(newsVo.getAdminId());
-                    if (ObjectUtil.isNotNull(admin)) {
-                        newsVo.setAvatar(admin.getAvatar());
-                        newsVo.setNickName(admin.getNickName());
-                    }
+        }
+        page(newsPage, wrapper);
+        long total = newsPage.getTotal();
+        List<News> records = newsPage.getRecords();
+        List<NewsVo> newsVos = BeanCopyUtils.copyBeanList(records, NewsVo.class);
+
+        for (NewsVo newsVo : newsVos) {
+            Admin admin = adminMapper.selectById(newsVo.getAdminId());
+            if (ObjectUtil.isNotNull(admin)) {
+                newsVo.setAvatar(admin.getAvatar());
+                newsVo.setNickName(admin.getNickName());
+                if (newsVo.getContent().length()>=100){
+                    newsVo.setContent(newsVo.getContent().substring(0,70));
                 }
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("total", total);
-                map.put("records", newsVos);
-                return ResponseResult.okResult(map);
-
 
             }
         }
-        return null;
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("total", total);
+        map.put("records", newsVos);
+        return ResponseResult.okResult(map);
+    }
+
+    @Override
+    public ResponseResult addNews(News news) {
+        boolean login = StpUtil.isLogin();
+        if (!login){
+            return ResponseResult.errorResult(202,"请进行登录");
+        }
+        String loginId =(String) StpUtil.getLoginId();
+        System.out.println(loginId);
+        if (loginId.length()>=5){
+            String substringLoginId = loginId.substring(0, 5);
+            System.out.println(loginId.substring(0, 5));
+            System.out.println(loginId.substring( 5));
+            if (substringLoginId.equals("admin")){
+                news.setAdminId(Long.parseLong(loginId.substring(5)));
+                news.setPublishDate(DateTime.now());
+                news.setFlagDelete("0");
+                boolean save = save(news);
+                if (save){
+                    return ResponseResult.okResult();
+                }
+            }
+        }
+        return ResponseResult.errorResult(202,"添加失败");
     }
 }
 

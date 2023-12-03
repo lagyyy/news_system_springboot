@@ -1,5 +1,6 @@
 package com.news.domain;
 
+import com.news.domain.entity.UploadFile;
 import lombok.Data;
 
 /**
@@ -10,8 +11,8 @@ import lombok.Data;
 @Data
 public class FileUploadResult {
     // 文件名
-    private int id;
-    private String url;
+    private int errno = 0;
+    private UploadFile data;
     // 状态有：uploading done error removed
 
 }
