@@ -86,7 +86,9 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News>
                     List<News> records = newsPage.getRecords();
                     List<NewsVo> newsVos = BeanCopyUtils.copyBeanList(records, NewsVo.class);
                     for (NewsVo newsVo:newsVos){
-                        newsVo.setContent(newsVo.getContent().substring(0,100));
+                        if(newsVo.getContent().length()>100){
+                            newsVo.setContent(newsVo.getContent().substring(0,100));
+                        }
                         Admin admin = adminMapper.selectById(newsVo.getAdminId());
                         if (ObjectUtil.isNotNull(admin)){
                             newsVo.setAvatar(admin.getAvatar());
@@ -184,6 +186,15 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News>
             }
         }
         return ResponseResult.errorResult(202,"添加失败");
+    }
+
+    @Override
+    public ResponseResult deleteNewsOne(Long id) {
+        boolean b = removeById(id);
+        if (b){
+            return ResponseResult.okResult();
+        }
+        return ResponseResult.errorResult(204,"删除失败");
     }
 }
 

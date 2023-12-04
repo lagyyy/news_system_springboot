@@ -56,8 +56,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
         queryWrapper.eq(Comment::getNewsId,newsId).eq(Comment::getDelFlag,0);
         queryWrapper.orderByDesc(Comment::getCreateTime);
         List<Comment> commentList = list(queryWrapper);
+//        无评论
         if (commentList.size()==0 && ObjectUtil.isEmpty(commentList)){
-            return ResponseResult.okResult(204,"该文章无评论");
+            CommentListVo commentListVo = new CommentListVo();
+            commentListVo.setCommentList(new ArrayList<>());
+            commentListVo.setReadNumber(5);
+            return ResponseResult.okResult(commentListVo);
         }
         int commentCount = commentList.size();
         List commentIds = new ArrayList<>();

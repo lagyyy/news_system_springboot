@@ -20,6 +20,7 @@ public class NewsVo {
 
     private String avatar;
     private String description;
+    private String picture;
 
     /**
      * 新闻内容

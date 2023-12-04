@@ -32,6 +32,11 @@ public class NewsController {
         return newsService.getNewsOne(id);
     }
 
+    @GetMapping("del/{id}")
+    public ResponseResult deleteNewsOne(@PathVariable Long id){
+        return newsService.deleteNewsOne(id);
+    }
+
     @PostMapping("addNews")
     public ResponseResult addNews( @RequestBody(required = false) News news){
         return newsService.addNews(news);

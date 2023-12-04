@@ -55,6 +55,9 @@ public class News implements Serializable {
      * 标识发布者
      */
     private String description;
+
+    private String picture;
+
     private Long adminId;
 
     @TableField(exist = false)

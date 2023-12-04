@@ -32,6 +32,8 @@ public class AdminController {
         return adminService.getAdminListPage();
     }
 
+
+
     @PostMapping("isLogin")
     public ResponseResult isLogin(){
         boolean login = StpUtil.isLogin();
