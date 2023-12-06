@@ -39,6 +39,7 @@ public class NewsController {
 
     @PostMapping("addNews")
     public ResponseResult addNews( @RequestBody(required = false) News news){
+        System.out.println(news);
         return newsService.addNews(news);
     }
 }

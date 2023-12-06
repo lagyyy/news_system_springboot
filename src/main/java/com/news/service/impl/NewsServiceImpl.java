@@ -60,7 +60,6 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News>
                 long total = newsPage.getTotal();
                 List<News> records = newsPage.getRecords();
                 List<NewsVo> newsVos = BeanCopyUtils.copyBeanList(records, NewsVo.class);
-
                 for (NewsVo newsVo:newsVos){
                     Admin admin = adminMapper.selectById(newsVo.getAdminId());
                     if (ObjectUtil.isNotNull(admin)){
@@ -71,8 +70,10 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News>
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("total", total);
                 map.put("records", newsVos);
+                System.out.println("走1");
                 return ResponseResult.okResult(map);
             }else {
+                System.out.println("走2");
                 QueryWrapper<Category> categoryQueryWrapper = new QueryWrapper<>();
                 List<Category> categories = categoryMapper.selectList(categoryQueryWrapper);
                 List<List> lists = new ArrayList<>();
@@ -99,7 +100,6 @@ public class NewsServiceImpl extends ServiceImpl<NewsMapper, News>
                     lists.add(newsVos);
                     wrapper.clear();
                 }
-
             return ResponseResult.okResult(lists);
             }
 

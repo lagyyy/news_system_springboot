@@ -3,22 +3,20 @@ package com.news.service.impl;
 import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.news.domain.ResponseResult;
+import com.news.domain.dto.ChangePasswordDto;
 import com.news.domain.entity.Admin;
-import com.news.domain.entity.SysUser;
-import com.news.domain.query.AdminQuery;
 import com.news.domain.vo.AdminVo;
-import com.news.domain.vo.UserVo;
 import com.news.mapper.AdminMapper;
 import com.news.service.AdminService;
 import com.news.util.BeanCopyUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.yaml.snakeyaml.introspector.BeanAccess;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,44 +58,30 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin>
         List<Admin> list = list();
         List<AdminVo> adminVos = BeanCopyUtils.copyBeanList(list, AdminVo.class);
         return ResponseResult.okResult(adminVos);
-//        Page<Repair> repairPage = new Page<>(current, limit);
-//        QueryWrapper<Repair> wrapper = new QueryWrapper<>();
-//        if (repairQuery != null) {
-//            String address = repairQuery.getAddress();
-//            String begin = repairQuery.getBegin();
-//            String end = repairQuery.getEnd();
-//            String status = repairQuery.getStatus();
-//
-//            if (!StringUtils.isEmpty(status)) {
-//                wrapper.eq("status", status);
-//            }
-//            if (!StringUtils.isEmpty(address)) {
-//                wrapper.like("address", address);
-//            }
-//            if (!StringUtils.isEmpty(begin) && !StringUtils.isEmpty(end)) {
-//                wrapper.between("create_time", begin, end);
-//            }
-//            wrapper.orderByDesc("create_time");
-//        }
-//        page(repairPage, wrapper);
-//        long total = repairPage.getTotal();
-//        List<Repair> records = repairPage.getRecords();
-//        HashMap<String, Object> map = new HashMap<>();
-//        map.put("total", total);
-//        List<RepairVo> repairUserVos1 = BeanCopyUtils.copyBeanList(records, RepairVo.class);
-//        for (RepairVo r : repairUserVos1){
-//            Long userId = r.getUserId();
-//            SysUser sysUser = userMapper.selectById(userId);
-//            if (ObjectUtil.isEmpty(sysUser)){
-//                continue;
-//            }else {
-//                RepairUserVo repairUserVo = BeanCopyUtils.copyBean(sysUser, RepairUserVo.class);
-//                r.setRepairUserVo(repairUserVo);
-//            }
-//        }
-//        map.put("records", repairUserVos1);
-//        return ResponseResult.okResult(map);
-//    }
+    }
+    @Override
+    public ResponseResult changePassword(ChangePasswordDto passwordDto) {
+        Object loginId = StpUtil.getLoginId();
+        Admin admin = getById(Long.parseLong(loginId.toString()));
+        String old = SaSecureUtil.aesDecrypt(key, admin.getPassword());
+        if (!old.equals(passwordDto.getOldPassword())){
+            return ResponseResult.okResult(202,"旧密码输入错误");
+        }
+        LambdaUpdateWrapper<Admin> lambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        String newPassword = SaSecureUtil.aesEncrypt(key, passwordDto.getPassword());
+        lambdaUpdateWrapper.set(Admin::getPassword,newPassword);
+        boolean update = update(null, lambdaUpdateWrapper);
+        if (update==true){
+            return ResponseResult.okResult("更改成功");
+        }else {
+            return ResponseResult.okResult("网络错误");
+        }
+    }
+    @Override
+    public ResponseResult getAdmin(Long id) {
+        Admin byId = getById(id);
+        AdminVo adminVo = BeanCopyUtils.copyBean(byId, AdminVo.class);
+        return ResponseResult.okResult(adminVo);
     }
 }
 

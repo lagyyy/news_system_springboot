@@ -1,7 +1,9 @@
 package com.news.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import com.news.domain.ResponseResult;
+import com.news.domain.dto.ChangePasswordDto;
 import com.news.domain.dto.RegisterUserDto;
 import com.news.domain.entity.Admin;
 import com.news.domain.query.AdminQuery;
@@ -32,6 +34,11 @@ public class AdminController {
         return adminService.getAdminListPage();
     }
 
+    @GetMapping("getOne/{id}")
+    public ResponseResult getAdmin(@PathVariable Long id){
+        return adminService.getAdmin(id);
+    }
+
 
 
     @PostMapping("isLogin")
@@ -41,5 +48,10 @@ public class AdminController {
             return ResponseResult.okResult(202,"未登录");
         }else return ResponseResult.okResult(200,"已登录");
 
+    }
+    @SaCheckLogin
+    @PostMapping("changePassword")
+    public ResponseResult changePassword(@RequestBody ChangePasswordDto passwordDto){
+        return  adminService.changePassword(passwordDto);
     }
 }

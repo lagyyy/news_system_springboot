@@ -1,5 +1,6 @@
 package com.news.service;
 
+import com.news.domain.ResponseResult;
 import com.news.domain.entity.Announcement;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -9,5 +10,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-11-28 16:31:38
 */
 public interface AnnouncementService extends IService<Announcement> {
+
+    ResponseResult getFirst();
 
 }
